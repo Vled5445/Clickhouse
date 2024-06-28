@@ -1,22 +1,15 @@
-
-create table stage.course
+create table history.courses
 (
     name String,
-    duration_day UInt16,
     lanuage LowCardinality(String),
     description String,
     author_id  UInt32
 )
 engine = MergeTree()
-order by name
+order by name;
 
-create table direct_log.course
-(
-        name String,
-    duration_day UInt16,
-    lanuage LowCardinality(String),
-    description String,
-    author_id  UInt32
-)
-engine = Buffer(stage,course,16, 10, 100, 10000, 1000000, 10000000, 100000000);
-
+create materialized view direct_log.course_mv
+to history.courses
+as
+    select name, lanuage, description, author_id
+from stage.course
