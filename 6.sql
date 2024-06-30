@@ -1,4 +1,4 @@
-create table history.courses
+create table current.courses
 (
     name String,
     lanuage LowCardinality(String),
@@ -9,7 +9,7 @@ engine = MergeTree()
 order by name;
 
 create materialized view direct_log.course_mv
-to history.courses
+to current.courses
 as
     select name, lanuage, description, author_id
 from stage.course
